@@ -17,6 +17,19 @@
     PUT /books/_doc/5
     {"name":"飘 Gone With The Wind","year": 1936,"author":"Margaret Mitchell","info":"《飘》是美国女作家玛格丽特米切尔（19001949）十年磨一剑的作品，也是唯一的作品。《飘》称得上有史以来最经典的爱情巨著之一，由费雯丽和克拉克盖博主演的影片亦成为影史上不..."}
 
+    PUT /computer/_doc/S2
+    {"name":"ThinkPad S2","model":"20R7A018CD","processor":"i5-10210U","memory":"16G","hardDisk":"512G","screenSize":"13.3英寸","price":5499.00,"description":null}
+    PUT /computer/_doc/14
+    {"name":"ThinkBook 14","model":"20SLA028CD","processor":"i7-1065G7","memory":"8G","hardDisk":"512G","screenSize":"14英寸","price":5699.00,"description":null}
+    PUT /computer/_doc/X13
+    {"name":"ThinkPad X13","model":"20T2A005CD","processor":"i7-10510U","memory":"8G","hardDisk":"512G","screenSize":"13.3英寸","price":7999.00,"description":null}
+    PUT /computer/_doc/T14
+    {"name":"ThinkPad T14","model":"20S0A007CD","processor":"i5-10210U","memory":"16G","hardDisk":"512G","screenSize":"14英寸","price":8999.00,"description":null}
+    PUT /computer/_doc/P15s
+    {"name":"ThinkPad P15s","model":"20T4A000CD","processor":"i7-10510U","memory":"16G","hardDisk":"512G","screenSize":"15.6英寸","price":10499.00,"description":null}
+    PUT /computer/_doc/X1
+    {"name":"ThinkPad X1","model":"20U90039CD","processor":"i7-10710U","memory":"16G","hardDisk":"1T","screenSize":"14英寸","price":16999.00,"description":null}
+
 ## 搜索
 
 ### 1、query string search
