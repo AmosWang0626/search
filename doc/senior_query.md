@@ -24,7 +24,7 @@
 
     `GET /computer/_search`
 
-- 1.2 根据名称搜索 + 根据初版时间排序
+- 1.2 根据名称搜索 and 价格排序
 
     `GET /computer/_search?q=name:ThinkPad&sort=price:desc`
 
@@ -88,7 +88,7 @@ GET /computer/_search
 }
 ```
 
-- 2.2 根据名称搜索 + 根据初版时间排序
+- 2.2 根据名称搜索 and 价格排序
 ```
 GET /computer/_search
 ```
