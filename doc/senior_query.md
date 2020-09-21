@@ -2,21 +2,6 @@
 
 ## 初始化数据
 
-    PUT /books/_doc/1
-    {"name":"老人与海 The Old Man and the Sea","year": 1952,"author":"Ernest Hemingway","info":"主人公是一位名叫圣地亚哥的老渔夫，配角是一个叫马诺林的小孩。风烛残年的老渔夫一连八十四天都没有钓到一条鱼，但他仍不肯认输，而是充满着奋斗的精神，终于在第八十五天钓到一条身长十八尺，体重一千五百磅的大马林鱼。..."}
-    
-    PUT /books/_doc/2
-    {"name":"小王子 Little Prince","year": 1942,"author":"Antoine de Saint-Exupéry","info":"我请孩子们原谅我把这本书献给了一个大人。我有一个很重要的理由：这个大人是我在世界上最好的朋友。我还有另一个理由：这个大人他什么都能懂，甚至给孩子 们写的书他也能懂。我的第三个理由是：这个大人住在法国，他在那里挨饿、受冻。他很需要安慰。如果这些理由还不..."}
-    
-    PUT /books/_doc/3
-    {"name":"了不起的盖茨比 The Great Gatsby","year": 1925,"author":"F. Scott Fitzgerald","info":"The Great Gatsby is a novel by the American author F. Scott Fitzgerald. First published in 1925, it is set on Long Island's North Shore and in New York City from spring to autumn of 1922. The novel ta..."}
-    
-    PUT /books/_doc/4
-    {"name":"傲慢与偏见 Pride And prejudice","year": 1813,"author":"Jane Austen","info":"小乡绅班纳特有五个待字闺中的千金，班纳特太太整天操心着为女儿物色称心如意的丈夫。新来的邻居彬格莱是个有钱的单身汉，他立即成了班纳特太太追猎的目标。在一次舞会上，彬格莱对班纳特家的大女儿吉英一见钟情，班纳特太太为此欣喜若狂。参加舞会的还有彬格莱的好友..."}
-    
-    PUT /books/_doc/5
-    {"name":"飘 Gone With The Wind","year": 1936,"author":"Margaret Mitchell","info":"《飘》是美国女作家玛格丽特米切尔（19001949）十年磨一剑的作品，也是唯一的作品。《飘》称得上有史以来最经典的爱情巨著之一，由费雯丽和克拉克盖博主演的影片亦成为影史上不..."}
-
     PUT /computer/_doc/S2
     {"name":"ThinkPad S2","model":"20R7A018CD","processor":"i5-10210U","memory":"16G","hardDisk":"512G","screenSize":"13.3英寸","price":5499.00,"description":null}
     PUT /computer/_doc/14
@@ -37,11 +22,11 @@
 
 - 1.1 搜索全部
 
-    `GET /books/_search`
+    `GET /computer/_search`
 
 - 1.2 根据名称搜索 + 根据初版时间排序
 
-    `GET /books/_search?q=name:The&sort=year:asc`
+    `GET /computer/_search?q=name:ThinkPad&sort=price:desc`
 
 - 1.3 搜索结果分析
 
@@ -63,18 +48,22 @@
         "max_score" : null, // 结果集中最大的相关度
         "hits" : [
           {
-            "_index" : "books",
+            "_index" : "computer",
             "_type" : "_doc",
-            "_id" : "1",
-            "_score" : null, // 当前结果相关度
+            "_id" : "X1",
+            "_score" : null,
             "_source" : {
-              "name" : "老人与海 The Old Man and the Sea",
-              "year" : 1952,
-              "author" : "Ernest Hemingway",
-              "info" : "主人公是一位名叫圣地亚哥的老渔夫，配角是一个叫马诺林的小孩。风烛残年的老渔夫一连八十四天都没有钓到一条鱼，但他仍不肯认输，而是充满着奋斗的精神，终于在第八十五天钓到一条身长十八尺，体重一千五百磅的大马林鱼。..."
+              "name" : "ThinkPad X1",
+              "model" : "20U90039CD",
+              "processor" : "i7-10710U",
+              "memory" : "16G",
+              "hardDisk" : "1T",
+              "screenSize" : "14英寸",
+              "price" : 16999.0,
+              "description" : null
             },
             "sort" : [
-              1952
+              16999.0
             ]
           }
         ]
@@ -89,28 +78,30 @@
 
 - 2.1 搜索全部
 ```
-GET /books/_search
+GET /computer/_search
 ```
 ```json
 {
-  "query": {"match_all": {}}
+  "query": {
+    "match_all": {}
+  }
 }
 ```
 
 - 2.2 根据名称搜索 + 根据初版时间排序
 ```
-GET /books/_search
+GET /computer/_search
 ```
 ```json
 {
   "query": {
     "match": {
-      "name": "The"
+      "name": "ThinkPad"
     }
   },
   "sort": [
     {
-      "year": {
+      "price": {
         "order": "desc"
       }
     }
@@ -120,30 +111,30 @@ GET /books/_search
 
 - 2.3 分页查询
 ```
-GET /books/_search
+GET /computer/_search
 ```
 ```json
 {
-  "query": {"match_all": {}},
-  "from": 0,
-  "size": 2
+ "query": {"match_all": {}},
+ "from": 0,
+ "size": 2
 }
 ```
 
 - 2.4 查询指定字段
 ```
-GET /books/_search
+GET /computer/_search
 ```
 ```json
 {
-  "query": {"match_all": {}},
-  "_source": ["name", "author"]
+ "query": {"match_all": {}},
+  "_source": ["name", "processor"]
 }
 ```
 
 ### 3、query filter
 ```
-GET /books/_search
+GET /computer/_search
 ```
 ```json
 {
@@ -151,14 +142,14 @@ GET /books/_search
     "bool": {
       "must": [
         {"match": {
-          "name": "The"
+          "processor": "i7"
         }}
       ],
       "filter": [
         {"range": {
-          "year": {
-            "gte": 1930,
-            "lte": 1960
+          "price": {
+            "gte": 5000,
+            "lte": 10000
           }
         }}
       ]
@@ -169,47 +160,180 @@ GET /books/_search
 
 ### 4、full-text search（全文检索）
 ```
-GET /books/_search
+GET /computer/_search
 ```
 ```json
 {
-  "query": {
-    "match": {
-      "name": "The Wind"
-    }
-  }
+ "query": {
+   "match": {
+     "name": "X1"
+   }
+ }
 }
 ```
 
 ### 5、phrase search（短语搜索）
 ```
-GET /books/_search
+GET /computer/_search
 ```
 ```json
 {
-  "query": {
-    "match_phrase": {
-      "name": "The Wind"
-    }
-  }
+ "query": {
+   "match_phrase": {
+     "name": "ThinkPad X13"
+   }
+ }
 }
 ```
 
 ### 6、highlight search（高亮搜索）
 ```
-GET /books/_search
+GET /computer/_search
 ```
 ```json
 {
+ "query": {
+   "match": {
+     "name": "ThinkPad 14"
+   }
+ },
+ "highlight": {
+   "fields": {
+     "name": {}
+   }
+ }
+}
+```
+
+## 聚合分析
+
+### 1、分组
+> group by memory
+```
+# 默认情况下 text 类型的字段 fielddata 被禁用，如果要用于聚合分析，需要打开 fielddata
+PUT /computer/_mapping
+{
+  "properties": {
+    "memory": {
+      "type": "text",
+      "fielddata": true
+    }
+  }
+}
+
+# 执行 memory 分组
+GET /computer/_search
+{
+  "size": 0, 
+  "aggs": {
+    "group_by_memory": {
+      "terms": {
+        "field": "memory"
+      }
+    }
+  }
+}
+```
+
+### 2、分组，根据名字筛选
+```
+GET /computer/_search 
+{
+  "size": 0,
   "query": {
     "match": {
-      "name": "the Wind"
+      "name": "ThinkBook"
     }
-  },
-  "highlight": {
-    "fields": [{
-      "name": {}
-    }]
+  }, 
+  "aggs": {
+    "group_by_memory": {
+      "terms": {
+        "field": "memory"
+      }
+    }
+  }
+}
+```
+
+### 3、分组，计算平均价格
+```
+GET /computer/_search 
+{
+  "size": 0, 
+  "aggs": {
+    "group_by_memory": {
+      "terms": {
+        "field": "memory"
+      },
+      "aggs": {
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### 4、分组，计算平均价格，根据平均价格升序排序
+```
+GET /computer/_search 
+{
+  "size": 0, 
+  "aggs": {
+    "group_by_memory": {
+      "terms": {
+        "field": "memory",
+        "order": {
+          "avg_price": "asc"
+        }
+      },
+      "aggs": {
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### 5、根据价格区间，再分组
+```
+GET /computer/_search
+{
+  "size": 0,
+  "aggs": {
+    "group_by_price": {
+      "range": {
+        "field": "price",
+        "ranges": [
+          {
+            "from": 0,
+            "to": 4999
+          },
+          {
+            "from": 5000,
+            "to": 9999
+          },
+          {
+            "from": 10000,
+            "to": 20000
+          }
+        ]
+      },
+      "aggs": {
+        "group_by_memory": {
+          "terms": {
+            "field": "memory"
+          }
+        }
+      }
+    }
   }
 }
 ```
